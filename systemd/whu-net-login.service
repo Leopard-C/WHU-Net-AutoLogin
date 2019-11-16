@@ -1,0 +1,12 @@
+[Unit]
+Description=Auto auth and login to WHU network.
+After=network.target
+
+[Service]
+Type=Simple
+Restart=on-failure
+ExecStart=/usr/bin/python3 /etc/whu/whu-net-login-email.py
+
+[Install]
+WantedBy=multi-user.target
+
