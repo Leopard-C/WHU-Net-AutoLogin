@@ -5,7 +5,7 @@ After=network.target
 [Service]
 Type=Simple
 Restart=on-failure
-ExecStart=/usr/bin/python3 /etc/whu/whu-net-login-email.py
+ExecStart=/usr/bin/python3 /etc/whu/whu_net_login.py
 
 [Install]
 WantedBy=multi-user.target

@@ -1,18 +1,29 @@
 # WHU-Net-AutoLogin
 武大校园网自动认证登录脚本，使用Python语言编写。
 
-两个文件（windows，linux，mac均可运行，有Python就行）
+windows，linux，mac均可运行，有Python环境就行, 依赖`requests`库。
 
-+ whu-net-login.py：自动登陆【适合笔记本电脑】
-+ whu-net-login-email.py：自动登陆 + 发送ip地址到指定邮箱【适合Linux主机、服务器、树莓派等】
+## 功能
 
-## 如何使用
++ 连接校园网
++ 发送本机IP到指定邮箱
++ 断线重连 （不停地检测网络是否连接，默认间隔10s）
 
-`whu-net-login.py`修改如下两处
+## 基础使用
 
-![image-20191116201027802](assets/README/image-20191116201027802.png)
+在`do_login()`函数中，设置自己地校园网账号（学号）和密码，以及参数`queryString`。
 
-`whu-net-login-email.py`还需**额外**修改
+![image-20201007142556004](assets/README/image-20201007142556004.png)
+
+参数`queryString`，获取方法为如下：
+
++ 在浏览器中打开校园网登录页面，复制地址栏中`?`之后的所有内容。
+
+![image-20201007143938932](assets/README/image-20201007143938932.png)
+
+## 发送邮件（从QQ邮箱发出） & 断线重连
+
+![image-20201007144544383](assets/README/image-20201007144544383.png)
 
 ![image-20191116200849538](assets/README/image-20191116200849538.png)
 
@@ -20,13 +31,17 @@
 
 ![image-20191116201357030](assets/README/image-20191116201357030.png)
 
+断线重连
 
+![image-20201007150721506](assets/README/image-20201007150721506.png)
 
-## 一、On Linux
+## 开机启动
+
+## 一、Linux
 
 安装python3：`sudo apt install python3`
 
-### 1. 开机自动执行
+### 开机自动执行
 
 `systemd`目录提供了`whu-net-login.service`服务脚本（修改里面的文件路径）。
 
@@ -39,31 +54,16 @@ sudo systemctl enable whu-net-login.service		# 加入开机启动项中
 sudo reboot 	# 重启系统
 ```
 
-### 2. 定时执行(断线重连)【推荐】
-
-```sh
-sudo crontab -e		# 打开编辑crontab文件
-
-# 在文件末尾添加一行
-* * * * * /usr/bin/python3 /etc/whu/whu-net-login-email.py
-
-sudo reboot 	# 重启系统
-```
-
-注意，一定要使用绝对路径，且**不能**用`~`表示用户主目录。
-
-前面五个`*`表示每隔一分钟执行一次`/etc/whu/whu-net-login.py`程序。可自行调整。
 
 
-
-## 二、On Windows
+## 二、Windows
 
 ### 1. 开机自动执行
 
 新建一个bat脚本，写入
 
 ```
-C:\python.exe "C:\whu-net-login.py.py"
+C:\python.exe "C:\whu_net_login.py"
 ```
 
 只是个示例，自行修改相应的路径（绝对路径）。
@@ -71,20 +71,8 @@ C:\python.exe "C:\whu-net-login.py.py"
 另存为`start.bat`，放到以下两个目录的任何一个
 
 + C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp
-+ C:\Users\xxxxx\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup (xxxxx为自己电脑的用户名)
++ %USERPROFILE%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup
 
-### 2. 定时执行(断线重连)【没必要】
-
-打开 `Windows 任务计划程序 `，右侧，点击`Create Basic Task`
-
-![image-20191116203628635](assets/README/image-20191116203628635.png)
-
-然后，右键点击创建的计划任务，设置每1分钟执行一次
-
-![image-20191116203725119](assets/README/image-20191116203725119.png)
-
-
-
-## 三、On Mac
+## 三、Mac
 
 NULL
