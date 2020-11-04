@@ -3,7 +3,7 @@ Description=Auto auth and login to WHU network.
 After=network.target
 
 [Service]
-Type=Simple
+Type=simple
 Restart=on-failure
 ExecStart=/usr/bin/python3 /etc/whu/whu_net_login.py
 
